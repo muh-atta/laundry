@@ -1,22 +1,22 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
-@Entity()
+@Entity('jobs') // Explicitly name the table
 export class Job {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ type: 'varchar', length: 100 })
   name: string;
 
-  @Column()
+  @Column({ type: 'varchar', length: 255 })
   location: string;
 
-  @Column()
+  @Column({ type: 'datetime' })
   fromDate: Date;
 
-  @Column()
+  @Column({ type: 'datetime' })
   toDate: Date;
 
-  @Column('decimal')
+  @Column({ type: 'decimal', precision: 10, scale: 2 })
   wages: number;
 }

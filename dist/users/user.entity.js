@@ -9,42 +9,32 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Job = void 0;
+exports.User = void 0;
 const typeorm_1 = require("typeorm");
-let Job = class Job {
+let User = class User {
     id;
-    name;
-    location;
-    fromDate;
-    toDate;
-    wages;
+    email;
+    password;
+    role;
 };
-exports.Job = Job;
+exports.User = User;
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)(),
-    __metadata("design:type", Number)
-], Job.prototype, "id", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ type: 'varchar', length: 100 }),
+    (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
     __metadata("design:type", String)
-], Job.prototype, "name", void 0);
+], User.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'varchar', length: 255 }),
+    (0, typeorm_1.Column)({ unique: true }),
     __metadata("design:type", String)
-], Job.prototype, "location", void 0);
+], User.prototype, "email", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'datetime' }),
-    __metadata("design:type", Date)
-], Job.prototype, "fromDate", void 0);
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], User.prototype, "password", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'datetime' }),
-    __metadata("design:type", Date)
-], Job.prototype, "toDate", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ type: 'decimal', precision: 10, scale: 2 }),
-    __metadata("design:type", Number)
-], Job.prototype, "wages", void 0);
-exports.Job = Job = __decorate([
-    (0, typeorm_1.Entity)('jobs')
-], Job);
-//# sourceMappingURL=job.entity.js.map
+    (0, typeorm_1.Column)({ default: 'user' }),
+    __metadata("design:type", String)
+], User.prototype, "role", void 0);
+exports.User = User = __decorate([
+    (0, typeorm_1.Entity)()
+], User);
+//# sourceMappingURL=user.entity.js.map
