@@ -22,6 +22,20 @@ let JobsService = class JobsService {
     constructor(jobRepository) {
         this.jobRepository = jobRepository;
     }
+    async findPaginated(page = 1, limit = 10) {
+        const skip = (page - 1) * limit;
+        const [data, total] = await this.jobRepository.findAndCount({
+            skip,
+            take: limit,
+            order: { id: 'DESC' },
+        });
+        return {
+            data,
+            total,
+            page,
+            totalPages: Math.ceil(total / limit),
+        };
+    }
     async findAll() {
         return this.jobRepository.find();
     }

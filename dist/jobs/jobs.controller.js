@@ -16,16 +16,24 @@ exports.JobsController = void 0;
 const common_1 = require("@nestjs/common");
 const jobs_service_1 = require("./jobs.service");
 const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
+const pagination_dto_1 = require("../dto/pagination.dto");
 let JobsController = class JobsController {
     jobsService;
     constructor(jobsService) {
         this.jobsService = jobsService;
     }
+    async findPaginated({ page, limit }) {
+        return this.jobsService.findPaginated(page, limit);
+    }
     async findAll() {
         return this.jobsService.findAll();
     }
     async findOne(id) {
-        return this.jobsService.findOne(+id);
+        const jobId = parseInt(id);
+        if (isNaN(jobId)) {
+            throw new common_1.BadRequestException('Invalid job ID');
+        }
+        return this.jobsService.findOne(jobId);
     }
     async create(job) {
         return this.jobsService.create(job);
@@ -38,6 +46,13 @@ let JobsController = class JobsController {
     }
 };
 exports.JobsController = JobsController;
+__decorate([
+    (0, common_1.Get)('paginated'),
+    __param(0, (0, common_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [pagination_dto_1.PaginationDto]),
+    __metadata("design:returntype", Promise)
+], JobsController.prototype, "findPaginated", null);
 __decorate([
     (0, common_1.Get)(),
     __metadata("design:type", Function),

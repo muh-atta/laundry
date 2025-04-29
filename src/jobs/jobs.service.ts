@@ -10,6 +10,24 @@ export class JobsService {
     private jobRepository: Repository<Job>,
   ) {}
 
+   // Add this new method
+  async findPaginated(page: number = 1, limit: number = 10): Promise<{ data: Job[]; total: number; page: number; totalPages: number }> {
+    const skip = (page - 1) * limit;
+    
+    const [data, total] = await this.jobRepository.findAndCount({
+      skip,
+      take: limit,
+      order: { id: 'DESC' },
+    });
+
+    return {
+      data,
+      total,
+      page,
+      totalPages: Math.ceil(total / limit),
+    };
+  }
+
   async findAll(): Promise<Job[]> {
     return this.jobRepository.find();
   }

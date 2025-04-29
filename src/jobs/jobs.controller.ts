@@ -6,16 +6,24 @@ import {
   Delete, 
   Body, 
   Param, 
-  UseGuards 
+  UseGuards,
+  Query,
+  BadRequestException
 } from '@nestjs/common';
 import { JobsService } from './jobs.service';
 import { Job } from '../entities/job.entity';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { PaginationDto } from '../dto/pagination.dto';
 
 @Controller('jobs')
 @UseGuards(JwtAuthGuard)
 export class JobsController {
   constructor(private readonly jobsService: JobsService) {}
+
+    @Get('paginated')
+  async findPaginated(@Query() { page, limit }: PaginationDto) {
+    return this.jobsService.findPaginated(page, limit);
+  }
 
   @Get()
   async findAll(): Promise<Job[]> {
@@ -24,8 +32,13 @@ export class JobsController {
 
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<Job> {
-    return this.jobsService.findOne(+id);
+    const jobId = parseInt(id);
+    if (isNaN(jobId)) {
+      throw new BadRequestException('Invalid job ID');
+    }
+    return this.jobsService.findOne(jobId);
   }
+
 
   @Post()
   async create(@Body() job: Partial<Job>): Promise<Job> {
