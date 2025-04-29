@@ -39,7 +39,6 @@ export class JobsController {
     return this.jobsService.findOne(jobId);
   }
 
-
   @Post()
   async create(@Body() job: Partial<Job>): Promise<Job> {
     return this.jobsService.create(job);
